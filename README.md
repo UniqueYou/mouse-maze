@@ -14,6 +14,8 @@
 
 * 4、[电脑走迷宫算法](https://wenku.baidu.com/view/d8eb93b6a32d7375a517804f.html)
 
+* 5、[Scene Builder 2.0](https://code.makery.ch/zh-cn/library/javafx-tutorial/part1/)
+
 ##### 我的素材
 ##### 迷宫图片素材
 [![NECbhF.png](https://s1.ax1x.com/2020/06/17/NECbhF.png)](https://imgchr.com/i/NECbhF)
