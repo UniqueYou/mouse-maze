@@ -16,7 +16,7 @@
 
 ##### 迷宫图片
 [![NECbhF.png](https://s1.ax1x.com/2020/06/17/NECbhF.png)](https://imgchr.com/i/NECbhF)
-##### 测试文本（未完成）
+##### 测试文本
 mazetext.txt
 
 
