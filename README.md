@@ -16,6 +16,8 @@
 
 * 5、[Scene Builder 2.0](https://code.makery.ch/zh-cn/library/javafx-tutorial/part1/)
 
+* 6、[三种迷宫生成的算法概述（简书）](https://www.jianshu.com/p/f643b0a0b887)
+
 ##### 我的素材
 ##### 迷宫图片素材
 [![NECbhF.png](https://s1.ax1x.com/2020/06/17/NECbhF.png)](https://imgchr.com/i/NECbhF)
