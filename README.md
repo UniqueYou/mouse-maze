@@ -34,7 +34,7 @@
 [![NVL1PA.png](https://s1.ax1x.com/2020/06/17/NVL1PA.png)](https://imgchr.com/i/NVL1PA)
 
 ##### 测试文本
-mazetext.txt
+[mazetext.txt](https://github.com/UniqueYou/mouse-maze/blob/master/mazetext.txt)
 
 
 
