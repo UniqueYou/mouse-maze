@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Stack;
 
 /**
@@ -19,46 +20,16 @@ import java.util.Stack;
 
 abstract class Arithmetic {
 
-	/** 迷宫的大小固定为25 */
-	public final int SIZE = 25;
-
 	/** 路表示为1 */
 	public final int ROUND = 1;
 
 	/** 墙表示为0 */
 	public final int WALL = 0;
 
-	private int startX;// 迷宫起点的横坐标
-
-	private int startY;// 迷宫起点的纵坐标
-
-	private int endX;// 迷宫终点的横坐标
-
-	private int endY;// 迷宫终点的纵坐标
-
 	/**
-	 * 根据迷宫的起点和终点生成迷宫
-	 * 
-	 * @param startX
-	 * @param startY
-	 * @param endX
-	 * @param endY
-	 */
-	public Arithmetic(int startX, int startY, int endX, int endY) {
-		this.startX = startX;
-		this.startY = startY;
-		this.endX = endX;
-		this.endY = endY;
-	}
-
-	/**
-	 * 不带参数的构造方法 起点默认为(1,1),终点默认为(SIZE-2,SIZE-2)
+	 * 不带参数的构造方法
 	 */
 	public Arithmetic() {
-		this.startX = 1;
-		this.startY = 1;
-		this.endX = SIZE - 2;
-		this.endY = SIZE - 2;
 	}
 
 	/**
@@ -79,18 +50,32 @@ abstract class Arithmetic {
 	 */
 	public static int[][] creatMazeData(File file) {
 		ArrayList<Integer> list = new ArrayList<>();
-		int[][] mazeData = null;
-		int value;
-
-		try (FileInputStream input = new FileInputStream(file);) {
-			while ((value = input.read()) != -1)
-				list.add(value - '0');
-			mazeData = (int[][]) list.toArray();
-
+		try {
+			Scanner in = new Scanner(file);
+			while (in.hasNext()) {
+				list.add(in.nextInt());
+			}
+			in.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("Failed to import file:File not found");
-		} catch (IOException e) {
-			System.out.println("Input is filed");
+			e.printStackTrace();
+		}
+		return Arithmetic.toArray(list);
+	}
+
+	/**
+	 * 将链表转换成整形二位数组
+	 * 
+	 * @param list
+	 * @return int[][]
+	 */
+	public static int[][] toArray(ArrayList<Integer> list) {
+		int size = (int) Math.sqrt(list.size());
+		int[][] mazeData = new int[size][size];
+		int count = 0;
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				mazeData[i][j] = list.get(count++);
+			}
 		}
 		return mazeData;
 	}
@@ -115,86 +100,6 @@ abstract class Arithmetic {
 }
 
 /**
- * 回溯算法自动生成迷宫 深度优先
- * 
- * @author WangSong
- *
- */
-class Backtrack extends Arithmetic {
-
-	/**
-	 * 不带参数的构造方法
-	 */
-	public Backtrack() {
-
-	}
-
-	/**
-	 * 带起点和终点的构造方法
-	 * 
-	 * @param startX
-	 * @param startY
-	 * @param endX
-	 * @param endY
-	 */
-	public Backtrack(int startX, int startY, int endX, int endY) {
-		super(startX, startY, endX, endY);
-	}
-
-	/**
-	 * 得到迷宫数据
-	 * 
-	 * @return int[][]
-	 */
-	@Override
-	public int[][] creatMazeData() {
-		// 生成基础迷宫网格
-		int[][] mazeData = new int[SIZE][SIZE];
-		for (int i = 0; i < mazeData.length; i++) {
-			for (int j = 0; j < mazeData.length; j++) {
-				if (i % 2 == 1 && j % 2 == 1)
-					mazeData[i][j] = 1;
-			}
-		}
-		dig(mazeData, 1, 1);
-
-		return mazeData;
-	}
-
-	/**
-	 * 递归回溯 挖墙，将墙去掉
-	 * 
-	 * @param x
-	 * @param y
-	 */
-	public void dig(int[][] mazeData, int x, int y) {
-		Random rand = new Random();
-
-		// 如果越界的话那么也不能在挖了
-
-		// 如果是路的话，就不需要在挖墙了
-		if (mazeData[x][y] == WALL) {
-
-			// 随机选择一个方向开挖
-			switch (rand.nextInt(4)) {
-			case 0:
-				dig(mazeData, x, y - 1); // 往上挖
-				break;
-			case 1:
-				dig(mazeData, x, y + 1); // 往下挖
-				break;
-			case 2:
-				dig(mazeData, x - 1, y); // 往左挖
-				break;
-			case 3:
-				dig(mazeData, x + 1, y); // 往右挖
-				break;
-			}
-		}
-	}
-}
-
-/**
  * 递归分割生成迷宫
  * 
  * @author WangSong
@@ -202,104 +107,124 @@ class Backtrack extends Arithmetic {
  */
 class RecursiveDivision extends Arithmetic {
 
-	private int[][] mazeData = new int[SIZE][SIZE];
+	private int[][] mazeData = null;
+
+	private int width;// 迷宫的宽度
+
+	private int height;// 迷宫的高度
+
+	public RecursiveDivision(int width, int height) {
+		this.width = width % 2 + 1 == 0 ? width : width + 1;
+		this.height = height % 2 + 1 == 0 ? height : height + 1;
+		mazeData = new int[this.height][this.width];
+	}
 
 	@Override
 	public int[][] creatMazeData() {
-		int[][] mazeData = new int[SIZE][SIZE];
 
 		// 初始化迷宫，给迷宫添加一圈外墙
-		for (int i = 0; i < mazeData.length; i++) {
-			for (int j = 0; j < mazeData[0].length; j++) {
-				if (i == 0 || i == SIZE - 1 || j == 0 || j == SIZE - 1)
-					mazeData[i][j] = 0;
+
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
+					mazeData[y][x] = WALL;
 				else
-					mazeData[i][j] = 1;
+					mazeData[y][x] = ROUND;
 			}
 		}
-		division(0, 0,SIZE,SIZE);
+		division(1, 1, width-2, height-2);
+
 		return mazeData;
 	}
 
 	/**
-	 * 给迷宫分割画线
+	 * 递归分割画迷宫
 	 * 
-	 * @param x:迷宫起点的X坐标
-	 * @param y:迷宫终点的Y坐标
-	 * @param width:迷宫的宽度
-	 * @param height:迷宫的高度
+	 * @param startX:迷宫的起点横坐标
+	 * @param startY:迷宫的起点纵坐标
+	 * @param endX:迷宫的终点横坐标
+	 * @param endY:迷宫的终点纵坐标
 	 */
 	private void division(int startX, int startY, int endX, int endY) {
+
 		Random random = new Random();
-		int divisionX;// 分割墙的横坐标
-		int divisionY;// 分割墙的纵坐标
 
 		// 如果迷宫的宽度或者高度小于2了就不能再分割了
-		if (endX - startX <= 2 || endY -startY <= 2)
+		if (endX - startX <2 || endY - startY <2)
 			return;
+		int posX,posY;
+		/** x,y只能是偶数 */
 
-		int x = startX + 1 + random.nextInt(endX - startX - 1);// 纵向分割分割线的横坐标
-		int y = startY + random.nextInt(endY - startY - 1);// 横向分割线的纵坐标
+		 posX = startX + 1 + random.nextInt((endX - startX) / 2)*2;// 纵向分割分割线的横坐标
+
+			posY = startY + 1 + random.nextInt((endY - startY) / 2)*2;// 横向分割线的纵坐标
+
+		for (int i = startX; i <=endX; i++) // 横向分割
+			mazeData[posY][i] = WALL;
+
+		for (int i = startY; i <=endY; i++) // 纵向分割
+			mazeData[i][posX] = WALL;
 		
-		for (int i = startX; i < endX; i++) // 横向分割
-			mazeData[startY][i] = WALL;
+		division(startX, startY, posX - 1, posY - 1);// 左下区域
 
-		for (int i = startY; i < startX; i++) // 纵向分割
-			mazeData[i][startX] = WALL;
+		division(startX, posY + 1, posX - 1, endY);// 左上区域
 
+		division(posX + 1, posY + 1, endX, endY);// 右上区域
 
-		division(startX, startY, endX - 1, endY - 1);
-		division(startX + 1, startY + 1, endX, endY);
-		division(startX + 1, startY, endX, endY - 1);
-		division(startX, startY + 1, endX - 1, endY);
-
-//		// 随机打开三扇门
-//		switch (random.nextInt(4)) {
-//		case 0:
-//			openDoor(x - width, y, x - 1, y); // 开左边的墙
-//			break;
-//		case 1:
-//			openDoor(x, y - height, x, y - 1); // 开上方的墙
-//			break;
-//		case 2:
-//			openDoor(x + 1, y, x + width, y); // 开右边的墙
-//			break;
-//		case 3:
-//			openDoor(x, y + 1, x, y + width);// 开下面的墙
-//			break;
-//		}
+		division(posX + 1, startY, endX, posY - 1);// 右下区域
 		
+		
+		
+		// 随机打开三扇门
+		switch (random.nextInt(4)) {
+		case 0:
+			openDoor(startX, posY, posX - 1, posY); // 开左边的墙
+			openDoor(posX, posY + 1, posX, endY); // 开上方的墙
+			openDoor(posX + 1, posY, endX, posY); // 开右边的墙
 
-		// 左上角分割
+			break;
+		case 1:
+			openDoor(posX, posY + 1, posX, endY); // 开上方的墙
+			openDoor(posX + 1, posY, endX, posY); // 开右边的墙
+			openDoor(posX, startY, posX, posY - 1);// 开下面的墙
 
-		// 右上角分割
+			break;
+		case 2:
+			openDoor(posX + 1, posY, endX, posY); // 开右边的墙
+			openDoor(posX, startY, posX, posY - 1);// 开下面的墙
+			openDoor(startX, posY, posX - 1, posY); // 开左边的墙
 
-		// 左下角分割
+			break;
+		case 3:
+			openDoor(posX, startY, posX, posY - 1);// 开下面的墙
+			openDoor(startX, posY, posX - 1, posY); // 开左边的墙
+			openDoor(posX, posY + 1, posX, endY); // 开上方的墙
 
-		// 右下角分割
+			break;
+		}
 
 	}
 
 	/**
 	 * 在指定的一面墙上开一个随机的门
 	 * 
-	 * @param startX:墙开始的横坐标
-	 * @param startY：墙开始的纵坐标
-	 * @param endX：墙结束的横坐标
-	 * @param endY：墙结束的纵坐标
+	 * @param startX:迷宫开始的横坐标
+	 * @param startY:迷宫开始的纵坐标
+	 * @param endX：迷宫结束的横坐标
+	 * @param endY：迷宫结束的纵坐标
 	 */
 	public void openDoor(int startX, int startY, int endX, int endY) {
 		Random random = new Random();
 		int x;// 开门的横坐标
 		int y;// 开门的纵坐标
-
+		
 		// 墙是横着的
-		if (startX == endX) {
+		if (startY == endY) {
+			x = startX + random.nextInt((endX - startX) / 2 + 1) * 2;
+			mazeData[startY][x] = ROUND;
+		} else { // 墙是竖着的
 			y = startY + random.nextInt((endY - startY) / 2 + 1) * 2;// 在奇数墙上开门
 			mazeData[y][startX] = ROUND;
-		} else { // 墙是竖着的
-			x = startX + random.nextInt((endX - startX) / 2 + 1) * 2;// 在奇数墙上开门
-			mazeData[startY][x] = ROUND;
 		}
 	}
 
