@@ -1,4 +1,4 @@
-package cn.edu.cqut.mazeMouse;
+package cn.edu.cqut.Maze;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,12 +8,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * 老鼠走迷宫的算法实现
- *
+ * 使用递归分割绘制迷宫
  *
  * @author WangSong
  *
- * @Time 2020-6-16
+ * @Time 2020-6-22
  */
 
 abstract class Arithmetic {
@@ -23,7 +22,10 @@ abstract class Arithmetic {
 
 	/** 墙表示为0 */
 	public final int WALL = 0;
-
+	
+	/** 访问路线表示2*/
+	public final int PATH = 2;
+	
 	/**
 	 * 根据不同的算法生成不同的迷宫数据
 	 *
@@ -42,10 +44,10 @@ abstract class Arithmetic {
 	 */
 	public static int[][] createMazeData(File file) {
 		ArrayList<Integer> list = new ArrayList<>();
-		int row = 0;//迷宫的行数
-		int col =0;//迷宫的列数
+		int row = 0;// 迷宫的行数
+		int col = 0;// 迷宫的列数
 		try {
-			 row =  Arithmetic.getNumberOfLines(file);
+			row = Arithmetic.getNumberOfLines(file);
 			Scanner in = new Scanner(file);
 			while (in.hasNext()) {
 				list.add(in.nextInt());
@@ -54,9 +56,9 @@ abstract class Arithmetic {
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
-		col = list.size()/row;
+		col = list.size() / row;
 
-		return Arithmetic.toArray(list,row,col);
+		return Arithmetic.toArray(list, row, col);
 	}
 
 	/**
@@ -70,8 +72,8 @@ abstract class Arithmetic {
 				in.nextLine();
 				sum++;
 			}
-			if(in != null)
-			in.close();
+			if (in != null)
+				in.close();
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
@@ -80,12 +82,13 @@ abstract class Arithmetic {
 
 	/**
 	 * 将链表转换成二维数组
+	 * 
 	 * @param list
 	 * @param row
 	 * @param col
 	 * @return
 	 */
-	public static int[][] toArray(ArrayList<Integer> list,int row,int col) {
+	public static int[][] toArray(ArrayList<Integer> list, int row, int col) {
 		int[][] mazeData = new int[col][row];
 		int count = 0;
 		for (int i = 0; i < col; i++) {
@@ -107,8 +110,10 @@ abstract class Arithmetic {
 			for (int j = 0; j < data[0].length; j++) {
 				if (data[i][j] == 0)
 					System.out.print("[]");
-				else
+				else if (data[i][j] == 1)
 					System.out.print("  ");
+				else
+					System.out.print(" *");
 			}
 			System.out.println();
 		}
@@ -131,6 +136,7 @@ class RecursiveDivision extends Arithmetic {
 
 	/**
 	 * 生成自定义大小的迷宫
+	 * 
 	 * @param width
 	 * @param height
 	 */
@@ -142,12 +148,13 @@ class RecursiveDivision extends Arithmetic {
 	/**
 	 * 没有参数的构造方法
 	 */
-	public RecursiveDivision(){
+	public RecursiveDivision() {
 
 	}
 
 	/**
 	 * 自动生成迷宫
+	 * 
 	 * @return
 	 */
 	@Override
@@ -163,10 +170,10 @@ class RecursiveDivision extends Arithmetic {
 					mazeData[y][x] = ROUND;
 			}
 		}
-		division(1, 1, width-2, height-2);
-		//设置起点和终点
+		division(1, 1, width - 2, height - 2);
+		// 设置起点和终点
 		mazeData[1][0] = ROUND;
-		mazeData[height-2][width-1] = ROUND;
+		mazeData[height - 2][width - 1] = ROUND;
 		return mazeData;
 	}
 
@@ -201,26 +208,26 @@ class RecursiveDivision extends Arithmetic {
 
 		// 随机打开三扇门
 		switch (random.nextInt(4)) {
-			case 0:
-				openDoor(startX, posY, posX - 1, posY); // 开左边的墙
-				openDoor(posX, posY + 1, posX, endY); // 开上方的墙
-				openDoor(posX + 1, posY, endX, posY); // 开右边的墙
-				break;
-			case 1:
-				openDoor(posX, posY + 1, posX, endY); // 开上方的墙
-				openDoor(posX + 1, posY, endX, posY); // 开右边的墙
-				openDoor(posX, startY, posX, posY - 1);// 开下面的墙
-				break;
-			case 2:
-				openDoor(posX + 1, posY, endX, posY); // 开右边的墙
-				openDoor(posX, startY, posX, posY - 1);// 开下面的墙
-				openDoor(startX, posY, posX - 1, posY); // 开左边的墙
-				break;
-			case 3:
-				openDoor(posX, startY, posX, posY - 1);// 开下面的墙
-				openDoor(startX, posY, posX - 1, posY); // 开左边的墙
-				openDoor(posX, posY + 1, posX, endY); // 开上方的墙
-				break;
+		case 0:
+			openDoor(startX, posY, posX - 1, posY); // 开左边的墙
+			openDoor(posX, posY + 1, posX, endY); // 开上方的墙
+			openDoor(posX + 1, posY, endX, posY); // 开右边的墙
+			break;
+		case 1:
+			openDoor(posX, posY + 1, posX, endY); // 开上方的墙
+			openDoor(posX + 1, posY, endX, posY); // 开右边的墙
+			openDoor(posX, startY, posX, posY - 1);// 开下面的墙
+			break;
+		case 2:
+			openDoor(posX + 1, posY, endX, posY); // 开右边的墙
+			openDoor(posX, startY, posX, posY - 1);// 开下面的墙
+			openDoor(startX, posY, posX - 1, posY); // 开左边的墙
+			break;
+		case 3:
+			openDoor(posX, startY, posX, posY - 1);// 开下面的墙
+			openDoor(startX, posY, posX - 1, posY); // 开左边的墙
+			openDoor(posX, posY + 1, posX, endY); // 开上方的墙
+			break;
 		}
 	}
 
@@ -255,5 +262,12 @@ class RecursiveDivision extends Arithmetic {
 
 	public void setHeight(int height) {
 		this.height = height % 2 + 1 == 0 ? height : height + 1;
+	}
+	
+	/**
+	 * 获得迷宫数据
+	 */
+	public int[][] getMazeData() {
+		return mazeData;
 	}
 }
