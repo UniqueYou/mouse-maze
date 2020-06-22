@@ -1,16 +1,16 @@
-package cn.edu.cqut.mazeMouse;
+package cn.edu.cqut.Maze;
 
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-
-import java.io.File;
+import javafx.scene.text.Text;
+;
 
 /**
- * ×ÜµÄÃæ°å
+ * æ€»çš„é¢æ¿
  *
  * @author Song
  *
@@ -18,20 +18,28 @@ import java.io.File;
 class TotalPane extends Pane {
 
 	/**
-	 * Ãæ°åµÄ¿íÎª1200
+	 * é¢æ¿çš„å®½ä¸º1200
 	 */
 	private final double WIDTH = 1200;
 
 	/**
-	 * Ãæ°åµÄ¸ßÎª700
+	 * é¢æ¿çš„é«˜ä¸º700
 	 */
-	private final double HEIGHT = 700;
+	private final double HEIGHT = 800;
+	
+	int[][] mazaData;//è¿·å®«æ•°æ®
 
-	MazePane mazePane = null;// ÃÔ¹¬Ãæ°å
+	MazePane mazePane = null;// è¿·å®«é¢æ¿
 
-	Pane functionPane = null;// ¹¦ÄÜÃæ°å
+	Pane functionPane = null;// åŠŸèƒ½é¢æ¿
 
-	Accordion accordion1 = null;
+	Accordion accordion = null;//ç”Ÿæˆè¿·å®«ç•Œé¢
+	
+	AutoRunMazePane runMazePane = null;//è‡ªåŠ¨èµ°è¿·å®«é¢æ¿
+	
+	Button settingButton = null;//è®¾ç½®æŒ‰é’®
+	
+	
 
 
 	public TotalPane() {
@@ -39,15 +47,16 @@ class TotalPane extends Pane {
 		setHeight(HEIGHT);
 		paint();
 		run();
+		help();
 	}
 
 	/**
-	 * Êä³öÃæ°å
+	 * è¾“å‡ºé¢æ¿
 	 */
 	public void paint() {
 
 		/**
-		 * ÃÔ¹¬Ãæ°åÔÚ×ó±ß£¬´óÐ¡Îª700 x 700
+		 * è¿·å®«é¢æ¿åœ¨å·¦è¾¹ï¼Œå¤§å°ä¸º700 x 700
 		 */
 		mazePane = new MazePane();
 		mazePane.autoCreateMaze(40, 40);
@@ -56,19 +65,31 @@ class TotalPane extends Pane {
 		mazePane.setLayoutY(0);
 
 		/**
-		 * ¹¦ÄÜÃæ°åÔÚÓÒ±ß£¬´óÐ¡Îª600 x 700
+		 * åŠŸèƒ½é¢æ¿åœ¨å³è¾¹ï¼Œå¤§å°ä¸º600 x 700
 		 */
 		functionPane = new Pane();
 		functionPane.setPrefSize(600, 700);
 
-		Label label1 = new Label("Create maze:");
-		label1.setFont(Font.font(18));
+		Text text1 = new Text(0,30,"Create maze:");
+		text1.setFont(Font.font(20));
+		text1.setFill(Color.CORNFLOWERBLUE);
+
+		Text text2 = new Text(0,210,"Auto run maze:");
+		text2.setFont(Font.font(20));
+		text2.setFill(Color.CYAN);
+		text2.setFill(Color.CORNFLOWERBLUE);
 		
 		functionPane.setLayoutX(700);
 		functionPane.setLayoutY(0);
-		functionPane.getChildren().add(label1);
+		functionPane.getChildren().addAll(text1,text2);
 		getChildren().clear();
 		getChildren().addAll(mazePane, functionPane);
+		
+		//è‡ªåŠ¨è·‘è¿·å®«é¢æ¿
+		 runMazePane = new AutoRunMazePane(mazePane);
+		functionPane.getChildren().add(runMazePane);
+		runMazePane.setLayoutX(0);
+		runMazePane.setLayoutY(200);
 
 
 
@@ -76,178 +97,37 @@ class TotalPane extends Pane {
 
 	/**
 	/**
-	 * ÉèÖÃÊÂ¼þ
+	 * è®¾ç½®äº‹ä»¶
 	 */
 	public void run() {
-		accordion1 = new Accordion();
-		accordion1.setLayoutY(50);
-		accordion1.setLayoutX(0);
-		accordion1.setPrefWidth(600);
+		//ç”Ÿæˆè¿·å®«éƒ¨åˆ†ç•Œé¢
+		accordion = new Accordion();
+		accordion.setLayoutY(50);
+		accordion.setLayoutX(0);
+		accordion.setPrefWidth(600);
 		AutoCreatePane autoCreatePane = new AutoCreatePane(mazePane);
-		TitledPane titledPane1 = new TitledPane("Auto create maze",autoCreatePane);
 		
+		TitledPane titledPane1 = new TitledPane("Auto create maze", autoCreatePane);
 		FileCreatePane fileCreatePane = new FileCreatePane(mazePane);
-		
-		TitledPane titledPane2 = new TitledPane("Create maze from maze data",fileCreatePane);
-		accordion1.getPanes().addAll(titledPane1, titledPane2);
-		functionPane.getChildren().add(accordion1);
-
-	}
-
-}
-
-/**
- * ×Ô¶¯Éú³ÉÃÔ¹¬Ãæ°å
- */
-class AutoCreatePane extends Pane {
-
-	Label widthLabel = null;// ÌáÊ¾ÊäÈë¿í¶È±êÇ©
-
-	Label heightLabel = null;// ÌáÊ¾ÊäÈë¸ß¶È±êÇ©
-
-	Label titleLabel = null;// ±êÌâ±êÇ©
-
-	Button createButton = null;// Éú³ÉÃÔ¹¬°´Å¥
-
-	TextField widthText = null;// ¿í¶ÈÊäÈë¿ò
-
-	TextField heightText = null;// ¸ß¶ÈÊäÈë¿ò
-
-	public AutoCreatePane(MazePane mazePane) {
-		paint();
-		run(mazePane);
-	}
-
-	public void paint() {
-
-		titleLabel = new Label("Enter the height and width of the maze,and enter the button:");
-		titleLabel.setFont(Font.font(18));
-		titleLabel.setLayoutX(0);
-		titleLabel.setLayoutY(0);
-
-		widthLabel = new Label("Width:");
-		widthLabel.setPrefSize(60, 30);
-		widthLabel.setLayoutY(40);
-		widthLabel.setLayoutX(20);
-
-		heightLabel = new Label("Height:");
-		heightLabel.setPrefSize(60, 30);
-		heightLabel.setLayoutY(40);
-		heightLabel.setLayoutX(200);
-
-		createButton = new Button("Create Maze");
-		createButton.setPrefSize(150, 30);
-		createButton.setLayoutY(40);
-		createButton.setLayoutX(400);
-
-		widthText = new TextField();
-		widthText.setPrefSize(100, 30);
-		widthText.setLayoutY(40);
-		widthText.setLayoutX(90);
-
-		heightText = new TextField();
-		heightText.setPrefSize(100, 30);
-		heightText.setLayoutY(40);
-		heightText.setLayoutX(270);
-
-		getChildren().clear();
-		getChildren().addAll(titleLabel, widthLabel, widthText, heightLabel, heightText, createButton);
+		TitledPane titledPane2 = new TitledPane("Create maze from maze data", fileCreatePane);
+		accordion.getPanes().addAll(titledPane1, titledPane2);
+		functionPane.getChildren().add(accordion);
 
 	}
 	
 	/**
-	 * ÉèÖÃÊÂ¼þ
+	 * æ‰“å¼€å¸®åŠ©æŒ‰é’®
 	 */
-	
-	private void run(MazePane mazePane) {
-		
-		createButton.setOnAction(e->{		
-			String width = new String(widthText.getText());
-			String height = new String(heightText.getText());
-			if(width==""||height=="")
-			{
-			System.out.println("Please enter  width and height");	
-			}else {
-				
-				mazePane.getChildren().clear();
-				mazePane.autoCreateMaze(new Integer(width),new Integer(height));
-			}
-		
-		});
-	}
-
-}
-
-/**
- * ´ÓÎÄ¼þÑ¡ÔòÃÔ¹¬Êý¾ÝµÄÃæ°å
- */
-class FileCreatePane extends Pane{
-	 
-	FileChooser fileChooser = null;// ÎÄ¼þÑ¡ÔñÆ÷
-	
-	Label title = null;
-	
-	TextField filePath = null;
-	
-	Button browseButton = null;
-	
-	Button createButton = null;
-	
-	public FileCreatePane(MazePane mazePane) {
-		paint();
-		run(mazePane);
-	}
-	
-	/**
-	 * ´òÓ¡Ãæ°å
-	 */
-	public void paint() {
-		
-		title = new Label("Choose your data file:");
-		title.setFont(Font.font(18));
-		title.setLayoutX(0);
-		title.setLayoutY(0);
-		
-		browseButton = new Button("Browse");
-		browseButton.setLayoutX(320);
-		browseButton.setLayoutY(50);
-		
-		filePath = new TextField();
-		filePath.setLayoutX(0);
-		filePath.setLayoutY(50);
-		filePath.setPrefWidth(300);
-		filePath.setText("C:\\Users\\Song\\Desktop\\MazeData.txt");	
-		fileChooser = new FileChooser();
-		
-		createButton = new Button("Create Maze");
-		createButton.setLayoutX(450);
-		createButton.setLayoutY(50);
-		
-		getChildren().clear();
-		getChildren().addAll(title,filePath,browseButton,createButton);
-	}
-	
-	/**
-	 * ÉèÖÃÊÂ¼þ
-	 * 
-	 * @param mazePane
-	 */
-	public void run(MazePane mazePane) {
-		browseButton.setOnAction(e -> {
-			File file = fileChooser.showOpenDialog(new Stage());
-			filePath.setText(file.getPath());
-
-		});	
-		
-		createButton.setOnAction(e->{
-			mazePane.getChildren().clear();
-			mazePane.paint(new File(filePath.getText()));
+	public void help() {
+		settingButton = new Button();
+		settingButton.setLayoutX(20);
+		settingButton.setLayoutY(500);
+		settingButton.setShape(new Rectangle());
+		settingButton.setOnAction(e -> {
+			
 		});
 		
-		
+		functionPane.getChildren().add(settingButton);
 	}
-	
-	
+
 }
-
-
