@@ -3,8 +3,6 @@
 
 ##### 生成迷宫算法
 
-* 1.递归分割
-
 ···java
 
 /**
@@ -14,7 +12,6 @@
  *
  * @Time 2020-6-22
  */
-
 abstract class Arithmetic {
 
 	/** 路表示为1 */
@@ -274,7 +271,8 @@ class RecursiveDivision extends Arithmetic {
 ```
 
 ##### 寻找出口算法
-* 1.深度搜索(递归回溯)
+
+
 
 
 
