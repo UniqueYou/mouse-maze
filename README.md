@@ -3,7 +3,16 @@
 
 ##### 生成迷宫算法
 
-···java
+```java
+
+package cn.edu.cqut.Maze;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 /**
  * 使用递归分割绘制迷宫
@@ -268,6 +277,7 @@ class RecursiveDivision extends Arithmetic {
 		return mazeData;
 	}
 }
+
 ```
 
 ##### 寻找出口算法
