@@ -1,8 +1,33 @@
 # 老鼠走迷宫（mouse-maze）
+## 算法
 
-##### 回溯算法
+##### 生成迷宫算法
 
-* 1.深度优先
+* 1.递归分割
+
+##### 寻找出口算法
+* 1.深度搜索(递归回溯)
+
+
+
+## 素材
+
+##### 迷宫图片素材
+[![NECbhF.png](https://s1.ax1x.com/2020/06/17/NECbhF.png)](https://imgchr.com/i/NECbhF)
+
+##### 墙素材
+[![NVqjg0.png](https://s1.ax1x.com/2020/06/17/NVqjg0.png)](https://imgchr.com/i/NVqjg0)
+[![NVqvvV.png](https://s1.ax1x.com/2020/06/17/NVqvvV.png)](https://imgchr.com/i/NVqvvV)
+
+##### 路标素材
+
+[![NVL1PA.png](https://s1.ax1x.com/2020/06/17/NVL1PA.png)](https://imgchr.com/i/NVL1PA)     
+[![N1bw1U.png](https://s1.ax1x.com/2020/06/21/N1bw1U.png)](https://imgchr.com/i/N1bw1U)
+##### 测试文本
+[mazetext.txt](https://github.com/UniqueYou/mouse-maze/blob/master/mazetext.txt)
+
+##### 背景图片
+[![NNhalT.jpg](https://s1.ax1x.com/2020/06/23/NNhalT.jpg)](https://imgchr.com/i/NNhalT)
 
 ##### 查阅资料
 
@@ -25,25 +50,6 @@
 * 9、[DFS深度优先算法](https://blog.csdn.net/weixin_43873198/article/details/105535944?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159274375119195239818514%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=159274375119195239818514&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-4-105535944.nonecase&utm_term=%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E7%AE%97%E6%B3%95%E8%B5%B0%E8%BF%B7%E5%AE%AB) 
 
 * 10、[DFS深度遍历，输出所有的路径](https://blog.csdn.net/qq_43606858/article/details/102633692?utm_medium=distribute.pc_relevant.none-task-blog-baidujs-1) 
-
-##### 我的素材
-
-##### 迷宫图片素材
-[![NECbhF.png](https://s1.ax1x.com/2020/06/17/NECbhF.png)](https://imgchr.com/i/NECbhF)
-
-##### 墙素材
-[![NVqjg0.png](https://s1.ax1x.com/2020/06/17/NVqjg0.png)](https://imgchr.com/i/NVqjg0)
-[![NVqvvV.png](https://s1.ax1x.com/2020/06/17/NVqvvV.png)](https://imgchr.com/i/NVqvvV)
-
-##### 路标素材
-
-[![NVL1PA.png](https://s1.ax1x.com/2020/06/17/NVL1PA.png)](https://imgchr.com/i/NVL1PA)     
-[![N1bw1U.png](https://s1.ax1x.com/2020/06/21/N1bw1U.png)](https://imgchr.com/i/N1bw1U)
-##### 测试文本
-[mazetext.txt](https://github.com/UniqueYou/mouse-maze/blob/master/mazetext.txt)
-
-##### 背景图片
-[![NNhalT.jpg](https://s1.ax1x.com/2020/06/23/NNhalT.jpg)](https://imgchr.com/i/NNhalT)
 
 
 
