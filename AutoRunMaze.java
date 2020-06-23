@@ -1,87 +1,169 @@
 package cn.edu.cqut.Maze;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
+import java.util.Stack;
 
 /**
- * è‡ªåŠ¨ç”Ÿæˆè¿·å®«é¢æ¿
+ * ×Ô¶¯×ßÃÔ¹¬Ëã·¨
+ * 
+ * @author Song
+ *
  */
-class AutoCreatePane extends Pane {
-	
+public class AutoRunMaze {
 
-	Label widthLabel = null;// æç¤ºè¾“å…¥å®½åº¦æ ‡ç­¾
+	private int[][] mazeData = null;// ÃÔ¹¬Êı¾İ
 
-	Label heightLabel = null;// æç¤ºè¾“å…¥é«˜åº¦æ ‡ç­¾
+	private int[][] direction = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };// ÏÂÒ»²½×ßµÄ·½Ïò,·Ö±ğÎªÓÒÏÂ×óÉÏ
 
-	Label titleLabel = null;// æ ‡é¢˜æ ‡ç­¾
+	private int endX;// ÃÔ¹¬µÄÖÕµãX
 
-	Button createButton = null;// ç”Ÿæˆè¿·å®«æŒ‰é’®
+	private int endY;// ÃÔ¹¬µÄÖÕµãY
 
-	TextField widthText = null;// å®½åº¦è¾“å…¥æ¡†
+	private final int WALL = 0;
 
-	TextField heightText = null;// é«˜åº¦è¾“å…¥æ¡†
+	private final int VISITED = 2;
 
-	public AutoCreatePane(MazePane mazePane) {
-		paint();
-		run(mazePane);
-	}
+	private int[][] visited;// ±ê¼ÇÒÑ¾­×ß¹ıµÄÂ·
 
-	public void paint() {
+	private int sumStep;// Ò»¹²×ßµÄ²½Êı
 
-		titleLabel = new Label("Enter the height and width of the maze,and enter the button:");
-		titleLabel.setFont(Font.font(18));
-		titleLabel.setLayoutX(0);
-		titleLabel.setLayoutY(0);
-
-		widthLabel = new Label("Width:");
-		widthLabel.setPrefSize(60, 30);
-		widthLabel.setLayoutY(40);
-		widthLabel.setLayoutX(20);
-
-		heightLabel = new Label("Height:");
-		heightLabel.setPrefSize(60, 30);
-		heightLabel.setLayoutY(40);
-		heightLabel.setLayoutX(200);
-
-		createButton = new Button("Create Maze");
-		createButton.setPrefSize(150, 30);
-		createButton.setLayoutY(40);
-		createButton.setLayoutX(400);
-
-		widthText = new TextField();
-		widthText.setPrefSize(100, 30);
-		widthText.setLayoutY(40);
-		widthText.setLayoutX(90);
-
-		heightText = new TextField();
-		heightText.setPrefSize(100, 30);
-		heightText.setLayoutY(40);
-		heightText.setLayoutX(270);
-
-		getChildren().clear();
-		getChildren().addAll(titleLabel, widthLabel, widthText, heightLabel, heightText, createButton);
-
-	}
-
+	Stack<int[]> path = new Stack<int[]>();// ÓÃÀ´´¢´æ×îºóÂ·¾¶
 
 	/**
-	 * è®¾ç½®äº‹ä»¶
+	 * 
+	 * @param mazeData:ÃÔ¹¬Êı¾İ
+	 * @param startX:Æğµãºá×ø±ê
+	 * @param startY:Æğµã×İ×ø±ê
+	 * @param endX:ÖÕµãºá×ø±ê
+	 * @param endY:ÖÕµã×İ×ø±ê
 	 */
-	private void run(MazePane mazePane) {
+	public AutoRunMaze(int[][] mazeData, int startX, int startY, int endX, int endY) {
+		this.mazeData = mazeData;
+		this.endX = endX;
+		this.endY = endY;
+		visited = new int[mazeData.length][mazeData[0].length];
+		int[] first = { startX, startY };
+		path.push(first);
+		run(startX, startY);
+	}
 
-		createButton.setOnAction(e -> {
-			String width = new String(widthText.getText());
-			String height = new String(heightText.getText());
-			if (width.equals("") || height.equals("")) {
-				mazePane.getChildren().clear();
-				mazePane.autoCreateMaze(51, 51);// å¦‚æœæ²¡æœ‰è¾“å…¥å°±é»˜è®¤ç”Ÿæˆ51x51çš„è¿·å®«
-			} else {
-				mazePane.getChildren().clear();
-				mazePane.autoCreateMaze(new Integer(width), new Integer(height));
+	/**
+	 * ÓÒÊÖ·¨Ôò×ßÃÔ¹¬
+	 * 
+	 * @param x£ºÏÖÔÚµÄºá×ø±ê
+	 * @param y£ºÏÖÔÚµÄ×İ×ø±ê
+	 */
+	public void run(int x, int y) {
+
+		visited[y][x] = VISITED;
+
+		// µİ¹é½áÊøÌõ¼ş
+		if (x == endX && y == endY)
+			return;
+
+		int nextStepX = x;
+		int nextStepY = y;
+		boolean flag = true;// ÅĞ¶ÏÊÇ·ñÎŞÂ·¿É×ßµÄ±êÖ¾
+
+		// Ñ¡ÔñÏÂÒ»¸öÎ»ÖÃ£ºÓÒÊÖ·¨Ôò
+		for (int i = 0; i < 4; i++) {
+			nextStepX = x + direction[i][0];
+			nextStepY = y + direction[i][1];
+
+			if (isOver(nextStepX, nextStepY))// ÅĞ¶ÏÊÇ·ñÔ½½ç
+				continue;
+
+			if (isWall(nextStepX, nextStepY))// ÅĞ¶ÏÊÇ·ñÎªÇ½
+				continue;
+
+			if (isVisited(nextStepX, nextStepY))// ÅĞ¶ÏÊÇ·ñ·ÃÎÊ¹ı
+				continue;
+			flag = false;
+			int[] nextStep = { nextStepX, nextStepY };
+			path.push(nextStep);
+			run(nextStepX, nextStepY);
+			break;
+		}
+
+		// Èç¹ûÎŞÂ·¿É×ß
+		if (flag) {
+			path.pop();
+			int[] backStep = path.peek();
+			run(backStep[0], backStep[1]);
+		}
+	}
+
+	/**
+	 * ÅĞ¶ÏÄ³µãÊÇ·ñÒÑ¾­·ÃÎÊ¹ı
+	 * 
+	 * @param x:µ±Ç°·ÃÎÊµÄºá×ø±ê
+	 * @param y:µ±Ç°·ÃÎÊµÄ×İ×ø±ê
+	 */
+	public boolean isVisited(int x, int y) {
+		return visited[y][x] == VISITED;
+	}
+
+	/**
+	 * ÅĞ¶ÏÄ³µãÊÇ²»ÊÇÇ½
+	 */
+	public boolean isWall(int x, int y) {
+		return mazeData[y][x] == WALL;
+	}
+
+	/**
+	 * ÅĞ¶ÏÄ³µãÊÇ·ñÔ½½ç
+	 */
+	public boolean isOver(int x, int y) {
+		// ÅĞ¶ÏÏÂÒ»²½ºá×ø±êÊÇ·ñÔ½½ç
+		if (x < 0 || x > mazeData[0].length - 1)
+			return true;
+		// ÅĞ¶ÏÏÂÒ»²½×İ×ø±êÊÇ·ñÔ½½ç
+		if (y < 0 || y > mazeData.length - 1)
+			return true;
+		return false;
+	}
+
+	/**
+	 * ±£´æÂ·¾¶ĞÅÏ¢µ½ÃÔ¹¬Êı×éÖĞ
+	 * 
+	 */
+	public String getStackInfo() {
+		StringBuilder string = new StringBuilder();
+		for (int i = 0; i < path.size(); i++) {
+			int[] pos = path.get(i);
+			string.append(i + 1 + ": (" + pos[0] + "," + pos[1] + ")\n");
+			sumStep = path.size();
+		}
+		return string.toString();
+	}
+
+	/**
+	 * »ñµÃÃÔ¹¬Â·¾¶
+	 * 
+	 * @return
+	 */
+	public int[][] getPathInfo() {
+
+		// Éî¶È¿ËÂ¡
+		int[][] temp = new int[mazeData.length][mazeData[0].length];
+		for (int i = 0; i < temp.length; i++) {
+			for (int j = 0; j < temp[0].length; j++) {
+				temp[i][j] = mazeData[i][j];
 			}
-		});
+		}
+
+		for (int i = 0; i < path.size(); i++) {
+			int[] pos = path.get(i);
+			temp[pos[1]][pos[0]] = VISITED;
+		}
+		return temp;
+	}
+
+	/**
+	 * ·µ»ØÒ»¹²×ßµÄ²½Êı
+	 * 
+	 * @return
+	 */
+	public int getSumStep() {
+		return sumStep;
 	}
 }

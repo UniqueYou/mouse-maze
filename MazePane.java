@@ -8,27 +8,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
- * è¿·å®«é¢æ¿
+ * ÃÔ¹¬Ãæ°å
+ * 
+ * @author WangSong
  */
 class MazePane extends GridPane {
 
-	/**
-	 * 0è¡¨ç¤ºå¢™
-	 */
+	/** 0±íÊ¾Ç½ */
 	private final int WALL = 0;
 
-	/**
-	 * 1è¡¨ç¤ºè·¯
-	 */
+	/** 1±íÊ¾Â· */
 	private final int ROUND = 1;
-	
-	/**è¡¨ç¤ºå·²ç»èµ°è¿‡çš„è·¯*/
-	private final int VISITED =2;
-	
-	private int[][] mazeData = null;//è¿·å®«æ•°æ®
+
+	private int[][] mazeData = null;// ÃÔ¹¬Êı¾İ
 
 	/**
-	 * ä¸å¸¦å‚æ•°åˆ›é€ é•¿åº¦å®½åº¦éƒ½ä¸º700çš„é»˜è®¤æ„é€ æ–¹æ³•
+	 * ²»´ø²ÎÊı´´Ôì³¤¶È¿í¶È¶¼Îª700µÄÄ¬ÈÏ¹¹Ôì·½·¨
 	 */
 	public MazePane() {
 		setWidth(700);
@@ -36,18 +31,17 @@ class MazePane extends GridPane {
 	}
 
 	/**
-	 * æ ¹æ®æ–‡ä»¶ç”Ÿæˆè¿·å®«é¢æ¿çš„æ„é€ æ–¹æ³•
+	 * ¸ù¾İÎÄ¼şÉú³ÉÃÔ¹¬Ãæ°åµÄ¹¹Ôì·½·¨
 	 */
 	public MazePane(File file) {
 		this();
 		paint(file);
-		
 	}
 
 	/**
-	 * æ ¹æ®è¿·å®«æ•°æ®ç”Ÿæˆè¿·å®«
+	 * ¸ù¾İÃÔ¹¬Êı¾İÉú³ÉÃÔ¹¬
 	 *
-	 * @param mazeData
+	 * @param mazeData:ÃÔ¹¬Ãæ°å
 	 */
 	public MazePane(int[][] mazeData) {
 		this();
@@ -55,9 +49,10 @@ class MazePane extends GridPane {
 	}
 
 	/**
-	 * è¾“å…¥è¿·å®«çš„å®½å’Œé«˜è‡ªåŠ¨ç”Ÿæˆè¿·å®«
+	 * ¸ù¾İÃÔ¹¬µÄ¿íºÍ¸ß×Ô¶¯Éú³ÉÃÔ¹¬
 	 * 
-	 * @return
+	 * @param width:ÃÔ¹¬µÄ¿í
+	 * @param height:ÃÔ¹¬µÄ¸ß
 	 */
 	public void autoCreateMaze(int width, int height) {
 		RecursiveDivision recursiveDivision = new RecursiveDivision(width, height);
@@ -66,106 +61,111 @@ class MazePane extends GridPane {
 	}
 
 	/**
-	 * æ ¹æ®è¿·å®«æ–‡ä»¶ç”Ÿæˆè¿·å®«
+	 * ¸ù¾İÃÔ¹¬ÎÄ¼şÉú³ÉÃÔ¹¬
+	 * 
+	 * @param file:ÃÔ¹¬ÎÄ¼ş
 	 */
 	public void paint(File file) {
-		mazeData = Arithmetic.createMazeData(file);
+		this.mazeData = Arithmetic.createMazeData(file);
 		paint(mazeData);
 	}
 
 	/**
-	 * æ ¹æ®è¿·å®«æ•°æ®ç”Ÿæˆè¿·å®«
+	 * ¸ù¾İÃÔ¹¬Êı¾İÉú³ÉÃÔ¹¬
 	 *
-	 * @param mazeData
+	 * @param mazeData:ÃÔ¹¬Ãæ°å
 	 */
 	public void paint(int[][] mazeData) {
-		this.mazeData = mazeData;
 		for (int i = 0; i < mazeData.length; i++) {
 			for (int j = 0; j < mazeData[0].length; j++) {
-				if (mazeData[i][j] == WALL) // 0è¡¨ç¤ºä¸ºå¢™
+				if (mazeData[i][j] == WALL) // 0±íÊ¾ÎªÇ½
 				{
 					this.add(new WallPane(), j, i);
-				} else if (mazeData[i][j] == VISITED) {
+				} else if (mazeData[i][j] == ROUND) {
+					this.add(new RoundPane(), j, i);
+				} else
 					this.add(new VisitedPane(), j, i);
-				} else {
-					this.add(new PathPane(), j, i);
-				}
 			}
 		}
 	}
-	
+
 	/**
-	 * å¾—åˆ°è¿·å®«æ•°æ®
+	 * µÃµ½ÃÔ¹¬Êı¾İ
+	 * 
 	 * @return
 	 */
-	public int[][] getMazaData() {
-		return mazeData;
+	public int[][] getMazeData() {
+		// ±ØĞë½øĞĞÉî¶È¸´ÖÆ£¬²»ÄÜ¸Ä±äÃÔ¹¬±¾À´µÄÊı¾İ
+		int[][] temp = new int[mazeData.length][mazeData[0].length];
+		for (int i = 0; i < temp.length; i++) {
+			for (int j = 0; j < temp[0].length; j++) {
+				temp[i][j] = mazeData[i][j];
+			}
+		}
+		return temp;
 	}
 
 }
 
 /**
- * è·¯é¢æ¿
+ * Â·Ãæ°å
  *
- * @author Song
+ * @author WangSong
  */
-class PathPane extends Pane {
+class RoundPane extends Pane {
+
+	/** Â·Ãæ°åµÄ¿í¶ÈÉèÖÃÎª20 */
+	private final double WIDTH = 20;
+
+	/** Â·Ãæ°åµÄ¸ß¶ÈÉèÖÃÎª20 */
+	private final double HEIGHT = 20;
 
 	/**
-	 * è·¯é¢æ¿çš„å®½åº¦è®¾ç½®ä¸º20
+	 * Ã»ÓĞ²ÎÊıµÄ¹¹Ôì·½·¨
 	 */
-	private final double width = 20;
-
-	/**
-	 * è·¯é¢æ¿çš„é«˜åº¦è®¾ç½®ä¸º20
-	 */
-	private final double height = 20;
-
-	/**
-	 * æ²¡æœ‰å‚æ•°çš„æ„é€ æ–¹æ³•
-	 */
-	public PathPane() {
-		setWidth(width);
-		setHeight(height);
+	public RoundPane() {
+		setWidth(WIDTH);
+		setHeight(HEIGHT);
 		paint();
 	}
 
 	/**
-	 * ç”»å‡ºè·¯çš„å›¾ç‰‡ ç”¨ç©ºç™½è¡¨ç¤ºè·¯
+	 * ÓÃ¿Õ°×±íÊ¾Â·
 	 */
 	public void paint() {
 
 	}
+
 }
 
 /**
-* å¢™å£é¢æ¿ï¼Œç”»å‡ºè¿·å®«çš„å¢™å£
-*
-* @author WangSong
-*/
+ * Ç½Ãæ°å£¬»­³öÃÔ¹¬µÄÇ½±Ú
+ *
+ * @author WangSong
+ */
 class WallPane extends Pane {
 
 	/**
-	 * å¢™é¢æ¿çš„å®½åº¦è®¾ç½®ä¸º20
+	 * Ç½Ãæ°åµÄ¿í¶ÈÉèÖÃÎª20
 	 */
-	private final double width = 20;
+	private final double WIDTH = 20;
 
 	/**
-	 * å¢™é¢æ¿çš„é«˜åº¦è®¾ç½®ä¸º20
+	 * Ç½Ãæ°åµÄ¸ß¶ÈÉèÖÃÎª20
 	 */
-	private final double height = 20;
+	private final double HEIGHT = 20;
 
 	/**
-	 * æ²¡æœ‰å‚æ•°çš„æ„é€ æ–¹æ³•
+	 * Ã»ÓĞ²ÎÊıµÄ¹¹Ôì·½·¨
 	 */
 	public WallPane() {
-		setWidth(width);
-		setHeight(height);
+		setWidth(WIDTH);
+		setHeight(HEIGHT);
 		paint();
 	}
 
 	/**
-	 * æ·»åŠ å¢™çš„ç…§ç‰‡
+	 * Ìí¼ÓÇ½µÄÕÕÆ¬
 	 */
 	public void paint() {
 		Rectangle rectangle = new Rectangle();
@@ -179,33 +179,35 @@ class WallPane extends Pane {
 }
 
 /**
- * èµ°è¿‡çš„é¢æ¿é¢æ¿
- * @author Song
+ * ×ß¹ıµÄÂ·Ãæ°å
+ * 
+ * @author WangSong
  *
  */
-class VisitedPane extends Pane{
-	
+class VisitedPane extends Pane {
 
 	/**
-	 * é¢æ¿çš„å®½åº¦è®¾ç½®ä¸º20
+	 * Ãæ°åµÄ¿í¶ÈÉèÖÃÎª20
 	 */
-	private final double width = 20;
+	private final double WIDTH = 20;
 
 	/**
-	 * é¢æ¿çš„é«˜åº¦è®¾ç½®ä¸º20
+	 * Ãæ°åµÄ¸ß¶ÈÉèÖÃÎª20
 	 */
-	private final double height = 20;
-	
-	
+	private final double HEIGHT = 20;
+
 	/**
-	 * æ²¡æœ‰å‚æ•°çš„æ„é€ æ–¹æ³•
+	 * Ã»ÓĞ²ÎÊıµÄ¹¹Ôì·½·¨
 	 */
 	public VisitedPane() {
-		setWidth(width);
-		setHeight(height);
+		setWidth(WIDTH);
+		setHeight(HEIGHT);
 		paint();
 	}
-	
+
+	/**
+	 * ´òÓ¡ÃÔ¹¬
+	 */
 	public void paint() {
 		Rectangle rectangle = new Rectangle();
 		rectangle.setFill(Color.RED);
@@ -214,5 +216,5 @@ class VisitedPane extends Pane{
 		getChildren().clear();
 		getChildren().add(rectangle);
 	}
-	
+
 }

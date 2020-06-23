@@ -1,66 +1,68 @@
 package cn.edu.cqut.Maze;
 
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
+import javafx.scene.text.Text;
 
 /**
- * è‡ªåŠ¨èµ°è¿·å®«é¢æ¿
+ * ×Ô¶¯×ßÃÔ¹¬µÄÃæ°å
+ * 
+ * @author Song
+ *
  */
 class AutoRunMazePane extends Pane {
 
-	/** é¢æ¿çš„å®½åº¦ä¸º600 */
-	private final int width = 600;
+	/** Ãæ°åµÄ¿í¶ÈÎª600 */
+	private final int WIDTH = 600;
 
-	/** é¢æ¿çš„é«˜åº¦ä¸º400 */
-	private final int height = 200;
+	/** Ãæ°åµÄ¸ß¶ÈÎª400 */
+	private final int HEIGHT = 200;
 
-	Button runButton = null;// è‡ªåŠ¨èµ°è¿·å®«çš„è¿è¡ŒæŒ‰é’®
+	Button runButton = null;// ×Ô¶¯×ßÃÔ¹¬µÄÔËĞĞ°´Å¥
 
-	Button fillButton = null;// è‡ªåŠ¨å¡«å……ç»ˆç‚¹å’Œèµ·ç‚¹çš„æŒ‰é’®
+	Button fillButton = null;// ×Ô¶¯Ìî³äÖÕµãºÍÆğµãµÄ°´Å¥
 
-	TextField startXText = null;// è®¾ç½®èµ·ç‚¹æ¨ªåæ ‡
+	TextField startXText = null;// ÉèÖÃÆğµãºá×ø±ê
 
-	TextField startYText = null;// è®¾ç½®å¼€å§‹çºµåæ ‡
+	TextField startYText = null;// ÉèÖÃ¿ªÊ¼×İ×ø±ê
 
-	TextField endXText = null;// è®¾ç½®ç»ˆç‚¹æ¨ªåæ ‡
+	TextField endXText = null;// ÉèÖÃÖÕµãºá×ø±ê
 
-	TextField endYText = null;// è®¾ç½®ç»ˆç‚¹çºµåæ ‡
+	TextField endYText = null;// ÉèÖÃÖÕµã×İ×ø±ê
 
-	Label xLabel = null;// xæ ‡ç­¾
+	Label xLabel = null;// x±êÇ©
 
-	Label yLabel = null;// yæ ‡ç­¾
+	Label yLabel = null;// y±êÇ©
 
-	Label startLabel = null;// å¼€å§‹æ ‡ç­¾
+	Label startLabel = null;// ¿ªÊ¼±êÇ©
 
-	Label endLabel = null;// ç»“æŸæ ‡ç­¾
+	Label endLabel = null;// ½áÊø±êÇ©
 
-	Button detailsButton = null;// ç»†èŠ‚ä¿¡æ¯æŒ‰é’®
+	TextArea stackText = null;// Õ»ĞÅÏ¢ÏÔÊ¾
 
-	AutoRunMaze runMaze = null;// è‡ªåŠ¨èµ°è¿·å®«ç®—æ³•
+	Text stepSum = null;// ×Ü¹²×ßµÄ²½Êı
 
-	Stage stage = null;
-
-	DetailsPane detailsPane = null;
+	AutoRunMaze runMaze = null;// ×Ô¶¯×ßÃÔ¹¬Ëã·¨
 
 	/**
-	 * ä¸å¸¦å‚æ•°çš„æ„é€ æ–¹æ³•
+	 * 
+	 * @param mazePane:ÃÔ¹¬Ãæ°å
 	 */
 	public AutoRunMazePane(MazePane mazePane) {
-		setWidth(width);
-		setHeight(height);
+		setWidth(WIDTH);
+		setHeight(HEIGHT);
 		paint();
 		run(mazePane);
 	}
 
 	/**
-	 * è¾“å‡ºé¢æ¿
+	 * Êä³öÃæ°å
 	 */
 	public void paint() {
 
-		// è¿è¡ŒæŒ‰é’®
+		// ÔËĞĞ°´Å¥
 		runButton = new Button("Run");
 		runButton.setPrefSize(75, 30);
 		runButton.setLayoutX(450);
@@ -71,66 +73,83 @@ class AutoRunMazePane extends Pane {
 		fillButton.setLayoutX(450);
 		fillButton.setLayoutY(70);
 
-		// å¼€å§‹æ¨ªåæ ‡è¾“å…¥æ¡†
+		// ¿ªÊ¼ºá×ø±êÊäÈë¿ò
 		startXText = new TextField();
 		startXText.setPrefSize(75, 10);
 		startXText.setLayoutX(200);
 		startXText.setLayoutY(70);
 
-		// å¼€å§‹çºµåæ ‡è¾“å…¥æ¡†
+		// ¿ªÊ¼×İ×ø±êÊäÈë¿ò
 		startYText = new TextField();
 		startYText.setPrefSize(75, 10);
 		startYText.setLayoutX(330);
 		startYText.setLayoutY(70);
 
-		// ç»ˆç‚¹æ¨ªåæ ‡è¾“å…¥æ¡†
+		// ÖÕµãºá×ø±êÊäÈë¿ò
 		endXText = new TextField();
 		endXText.setPrefSize(75, 10);
 		endXText.setLayoutX(200);
 		endXText.setLayoutY(110);
 
-		// ç»ˆç‚¹çºµåæ ‡è¾“å…¥æ¡†
+		// ÖÕµã×İ×ø±êÊäÈë¿ò
 		endYText = new TextField();
 		endYText.setPrefSize(75, 10);
 		endYText.setLayoutX(330);
 		endYText.setLayoutY(110);
 
-		// xæ ‡ç­¾
+		// x±êÇ©
 		xLabel = new Label("X");
 		xLabel.setLayoutX(230);
 		xLabel.setLayoutY(35);
 		xLabel.setFont(Font.font(18));
 
-		// yæ ‡ç­¾
+		// y±êÇ©
 		yLabel = new Label("Y");
 		yLabel.setLayoutX(360);
 		yLabel.setLayoutY(35);
 		yLabel.setFont(Font.font(18));
 
-		// å¼€å§‹æ ‡ç­¾
+		// ¿ªÊ¼±êÇ©
 		startLabel = new Label("Starting point:");
 		startLabel.setFont(Font.font(18));
 		startLabel.setLayoutX(50);
 		startLabel.setLayoutY(75);
 
-		// ç»“æŸæ ‡ç­¾
-		endLabel = new Label("Ending  pointï¼š");
+		// ½áÊø±êÇ©
+		endLabel = new Label("Ending  point£º");
 		endLabel.setFont(Font.font(18));
 		endLabel.setLayoutX(50);
 		endLabel.setLayoutY(115);
 
+		// Õ»ÄÚĞÅÏ¢ÏÔÊ¾
+		stackText = new TextArea();
+		stackText.setLayoutX(10);
+		stackText.setLayoutY(220);
+		stackText.setPrefSize(580, 250);
+		stackText.setWrapText(true);
+		stackText.setFont(Font.font("Georgia", 18));
+
+		// ×ßµÄ²½Êı
+		stepSum = new Text(0, 490, "Step sum:");
+		stepSum.setFill(Color.BLUE);
+		stepSum.setFont(Font.font(20));
+
+		getChildren().clear();
+		getChildren().addAll(startLabel, endLabel, startXText, endXText, startYText, endYText, runButton, xLabel,
+				yLabel, fillButton, stackText, stepSum);
+
 	}
 
 	/**
-	 * è®¾ç½®äº‹ä»¶
+	 * ÉèÖÃÊÂ¼ş
 	 */
 	public void run(MazePane mazePane) {
 
-		// è®¾ç½®é»˜è®¤èµ·ç‚¹å’Œç»ˆç‚¹
+		// ÉèÖÃÄ¬ÈÏÆğµãºÍÖÕµã
 		startXText.setText("0");
 		startYText.setText("1");
 
-		// ç‚¹å‡»fillæŒ‰é’®è‡ªåŠ¨å¡«å……
+		// µã»÷fill°´Å¥×Ô¶¯Ìî³ä
 		fillButton.setOnAction(e -> {
 			startXText.setText("0");
 			startYText.setText("1");
@@ -139,25 +158,27 @@ class AutoRunMazePane extends Pane {
 			endYText.setText(tempData.length - 2 + "");
 		});
 
-		// ç‚¹å‡»æŒ‰é’®ç”Ÿæˆè¿·å®«è·¯å¾„
+		// µã»÷°´Å¥Éú³ÉÃÔ¹¬Â·¾¶
 		runButton.setOnAction(e -> {
 
 			String startX = startXText.getText();
 			String startY = startYText.getText();
 			String endX = endXText.getText();
 			String endY = endYText.getText();
-			// æ²¡æœ‰è¾“å…¥ä¸æ‰§è¡Œ
+			// Ã»ÓĞÊäÈë²»Ö´ĞĞ
 			if (startX.equals("") || startY.equals("") || endX.equals("") || endY.equals("")) {
 				return;
 			}
 
+			// ×Ô¶¯×ßÃÔ¹¬Ëã·¨
 			runMaze = new AutoRunMaze(mazePane.getMazeData(), new Integer(startX), new Integer(startY),
 					new Integer(endX), new Integer(endY));
 			mazePane.getChildren().clear();
 			mazePane.paint(runMaze.getPathInfo());
 
-			// è®¾ç½®æ ˆä¿¡æ¯æ˜¾ç¤º
-			detailsPane.setStackText(runMaze.getStackInfo());
+			// ÉèÖÃÕ»ĞÅÏ¢ÏÔÊ¾
+			stackText.setText(runMaze.getStackInfo());
+			stepSum.setText("Step sum:" + runMaze.getSumStep());
 		});
 
 	}
