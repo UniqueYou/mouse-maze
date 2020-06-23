@@ -42,6 +42,9 @@
 ##### 测试文本
 [mazetext.txt](https://github.com/UniqueYou/mouse-maze/blob/master/mazetext.txt)
 
+##### 背景图片
+[![NNhalT.jpg](https://s1.ax1x.com/2020/06/23/NNhalT.jpg)](https://imgchr.com/i/NNhalT)
+
 
 
 
