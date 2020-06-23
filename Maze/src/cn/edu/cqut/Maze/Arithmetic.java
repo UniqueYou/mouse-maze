@@ -12,7 +12,7 @@ import java.util.Scanner;
  *
  * @author WangSong
  *
- * @Time 2020-6-22
+ * @Time 2020-6-23
  */
 
 abstract class Arithmetic {
@@ -83,9 +83,9 @@ abstract class Arithmetic {
 	/**
 	 * 将链表转换成二维数组
 	 * 
-	 * @param list
-	 * @param row
-	 * @param col
+	 * @param list:链表
+	 * @param row:迷宫的行
+	 * @param col:迷宫的列
 	 * @return
 	 */
 	public static int[][] toArray(ArrayList<Integer> list, int row, int col) {
@@ -137,10 +137,11 @@ class RecursiveDivision extends Arithmetic {
 	/**
 	 * 生成自定义大小的迷宫
 	 * 
-	 * @param width
-	 * @param height
+	 * @param width:迷宫的宽度
+	 * @param height:迷宫的高度
 	 */
 	public RecursiveDivision(int width, int height) {
+		// 保证迷宫的高度和宽度为奇数，如果是偶数就+1变成奇数
 		this.width = width % 2 + 1 == 0 ? width : width + 1;
 		this.height = height % 2 + 1 == 0 ? height : height + 1;
 	}
@@ -178,7 +179,7 @@ class RecursiveDivision extends Arithmetic {
 	}
 
 	/**
-	 * 递归分割画迷宫
+	 * 递归分割生成随机迷宫
 	 *
 	 * @param startX:迷宫的起点横坐标
 	 * @param startY:迷宫的起点纵坐标
@@ -256,10 +257,18 @@ class RecursiveDivision extends Arithmetic {
 		}
 	}
 
+	/**
+	 * 设置迷宫的宽度
+	 * @param width:迷宫的宽度
+	 */
 	public void setWidth(int width) {
 		this.width = width % 2 + 1 == 0 ? width : width + 1;
 	}
 
+	/**
+	 * 设置迷宫的高度
+	 * @param height:迷宫的高度
+	 */
 	public void setHeight(int height) {
 		this.height = height % 2 + 1 == 0 ? height : height + 1;
 	}

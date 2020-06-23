@@ -30,12 +30,11 @@ public class AutoRunMaze {
 
 	/**
 	 * 
-	 * 
-	 * @param mazeData
-	 * @param startX
-	 * @param startY
-	 * @param endX
-	 * @param endY
+	 * @param mazeData:迷宫数据
+	 * @param startX:起点横坐标
+	 * @param startY:起点纵坐标
+	 * @param endX:终点横坐标
+	 * @param endY:终点纵坐标
 	 */
 	public AutoRunMaze(int[][] mazeData, int startX, int startY, int endX, int endY) {
 		this.mazeData = mazeData;
@@ -48,7 +47,7 @@ public class AutoRunMaze {
 	}
 
 	/**
-	 * 走迷宫
+	 * 右手法则走迷宫
 	 * 
 	 * @param x：现在的横坐标
 	 * @param y：现在的纵坐标
@@ -65,7 +64,7 @@ public class AutoRunMaze {
 		int nextStepY = y;
 		boolean flag = true;// 判断是否无路可走的标志
 
-		// 选择下一个位置
+		// 选择下一个位置：右手法则
 		for (int i = 0; i < 4; i++) {
 			nextStepX = x + direction[i][0];
 			nextStepY = y + direction[i][1];
@@ -160,7 +159,7 @@ public class AutoRunMaze {
 	}
 
 	/**
-	 * 得到一共走的步数
+	 * 返回一共走的步数
 	 * 
 	 * @return
 	 */

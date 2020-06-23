@@ -5,22 +5,27 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
 /**
- * 显示信息的面板 显示栈内信息
+ * 显示信息面板 (显示栈内信息)
  * 
- * @author Song
+ * @author WangSong
  *
  */
 public class DetailsPane extends Pane {
 
-	private final int width = 600;
+	/** 面板默认宽度为600 */
+	private final int WIDTH = 600;
 
-	private final int height = 400;
+	/** 面板默认高度为400 */
+	private final int HEIGHT = 400;
 
 	TextArea text = null;
 
+	/**
+	 * 无参构造方法
+	 */
 	public DetailsPane() {
-		setWidth(width);
-		setHeight(height);
+		setWidth(WIDTH);
+		setHeight(HEIGHT);
 		paint();
 	}
 

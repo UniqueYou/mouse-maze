@@ -12,19 +12,25 @@ import javafx.stage.Stage;
 
 /**
  * 从文件选则迷宫数据的面板
+ * 
+ * @author WangSong
  */
 class FileCreatePane extends Pane {
 
 	FileChooser fileChooser = null;// 文件选择器
 
-	Label title = null;
+	Label title = null;// 面板的标题
 
-	TextField filePath = null;
+	TextField filePath = null;// 面板的
 
-	Button browseButton = null;
+	Button browseButton = null;// 浏览按钮
 
-	Button createButton = null;
+	Button createButton = null;// 生成迷宫按钮
 
+	/**
+	 * 
+	 * @param mazaPane:迷宫信息
+	 */
 	public FileCreatePane(MazePane mazaPane) {
 		paint();
 		run(mazaPane);
@@ -62,21 +68,22 @@ class FileCreatePane extends Pane {
 	/**
 	 * 设置事件
 	 * 
-	 * @param mazePane
+	 * @param mazePane:迷宫面板
 	 */
 	public void run(MazePane mazePane) {
+		// 点击浏览按钮选择文件
 		browseButton.setOnAction(e -> {
 			File file = fileChooser.showOpenDialog(new Stage());
 			filePath.setText(file.getPath());
 
 		});
 
+		// 点击生成迷宫按钮生成从文件生成迷宫
 		createButton.setOnAction(e -> {
 			mazePane.getChildren().clear();
 			File file = new File(filePath.getText());
 			mazePane.paint(file);
 
 		});
-
 	}
 }

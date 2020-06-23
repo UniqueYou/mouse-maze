@@ -9,17 +9,15 @@ import javafx.scene.shape.Rectangle;
 
 /**
  * 迷宫面板
+ * 
+ * @author WangSong
  */
 class MazePane extends GridPane {
 
-	/**
-	 * 0表示墙
-	 */
+	/** 0表示墙 */
 	private final int WALL = 0;
 
-	/**
-	 * 1表示路
-	 */
+	/** 1表示路 */
 	private final int ROUND = 1;
 
 	private int[][] mazeData = null;// 迷宫数据
@@ -38,13 +36,12 @@ class MazePane extends GridPane {
 	public MazePane(File file) {
 		this();
 		paint(file);
-
 	}
 
 	/**
 	 * 根据迷宫数据生成迷宫
 	 *
-	 * @param mazeData
+	 * @param mazeData:迷宫面板
 	 */
 	public MazePane(int[][] mazeData) {
 		this();
@@ -52,9 +49,10 @@ class MazePane extends GridPane {
 	}
 
 	/**
-	 * 输入迷宫的宽和高自动生成迷宫
+	 * 根据迷宫的宽和高自动生成迷宫
 	 * 
-	 * @return
+	 * @param width:迷宫的宽
+	 * @param height:迷宫的高
 	 */
 	public void autoCreateMaze(int width, int height) {
 		RecursiveDivision recursiveDivision = new RecursiveDivision(width, height);
@@ -64,6 +62,8 @@ class MazePane extends GridPane {
 
 	/**
 	 * 根据迷宫文件生成迷宫
+	 * 
+	 * @param file:迷宫文件
 	 */
 	public void paint(File file) {
 		this.mazeData = Arithmetic.createMazeData(file);
@@ -73,7 +73,7 @@ class MazePane extends GridPane {
 	/**
 	 * 根据迷宫数据生成迷宫
 	 *
-	 * @param mazeData
+	 * @param mazeData:迷宫面板
 	 */
 	public void paint(int[][] mazeData) {
 		for (int i = 0; i < mazeData.length; i++) {
@@ -110,31 +110,27 @@ class MazePane extends GridPane {
 /**
  * 路面板
  *
- * @author Song
+ * @author WangSong
  */
 class RoundPane extends Pane {
 
-	/**
-	 * 路面板的宽度设置为20
-	 */
-	private final double width = 20;
+	/** 路面板的宽度设置为20 */
+	private final double WIDTH = 20;
 
-	/**
-	 * 路面板的高度设置为20
-	 */
-	private final double height = 20;
+	/** 路面板的高度设置为20 */
+	private final double HEIGHT = 20;
 
 	/**
 	 * 没有参数的构造方法
 	 */
 	public RoundPane() {
-		setWidth(width);
-		setHeight(height);
+		setWidth(WIDTH);
+		setHeight(HEIGHT);
 		paint();
 	}
 
 	/**
-	 * 画出路的图片 用空白表示路
+	 * 用空白表示路
 	 */
 	public void paint() {
 
@@ -143,7 +139,7 @@ class RoundPane extends Pane {
 }
 
 /**
- * 墙壁面板，画出迷宫的墙壁
+ * 墙面板，画出迷宫的墙壁
  *
  * @author WangSong
  */
@@ -152,19 +148,19 @@ class WallPane extends Pane {
 	/**
 	 * 墙面板的宽度设置为20
 	 */
-	private final double width = 20;
+	private final double WIDTH = 20;
 
 	/**
 	 * 墙面板的高度设置为20
 	 */
-	private final double height = 20;
+	private final double HEIGHT = 20;
 
 	/**
 	 * 没有参数的构造方法
 	 */
 	public WallPane() {
-		setWidth(width);
-		setHeight(height);
+		setWidth(WIDTH);
+		setHeight(HEIGHT);
 		paint();
 	}
 
@@ -183,9 +179,9 @@ class WallPane extends Pane {
 }
 
 /**
- * 走过的面板面板
+ * 走过的路面板
  * 
- * @author Song
+ * @author WangSong
  *
  */
 class VisitedPane extends Pane {
@@ -193,19 +189,19 @@ class VisitedPane extends Pane {
 	/**
 	 * 面板的宽度设置为20
 	 */
-	private final double width = 20;
+	private final double WIDTH = 20;
 
 	/**
 	 * 面板的高度设置为20
 	 */
-	private final double height = 20;
+	private final double HEIGHT = 20;
 
 	/**
 	 * 没有参数的构造方法
 	 */
 	public VisitedPane() {
-		setWidth(width);
-		setHeight(height);
+		setWidth(WIDTH);
+		setHeight(HEIGHT);
 		paint();
 	}
 

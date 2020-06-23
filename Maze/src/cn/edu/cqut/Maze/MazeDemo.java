@@ -5,6 +5,12 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+/**
+ * √‘π¨≥Ã–Ú
+ * 
+ * @author WangSong
+ *
+ */
 public class MazeDemo extends Application {
 
 	public static void main(String[] args) {
@@ -15,7 +21,6 @@ public class MazeDemo extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		TotalPane pane = new TotalPane();
 		Scene scene = new Scene(pane, 1300, 700);
-
 		Image ico = new Image("https://s1.ax1x.com/2020/06/23/NUSDFx.png");// Õº±ÍµƒÀı¬‘Õº
 		primaryStage.getIcons().add(ico);
 		primaryStage.setTitle("MazeDemo");

@@ -8,6 +8,8 @@ import javafx.scene.text.Font;
 
 /**
  * 自动生成迷宫面板
+ * 
+ * @author WangSong
  */
 class AutoCreatePane extends Pane {
 
@@ -23,11 +25,18 @@ class AutoCreatePane extends Pane {
 
 	TextField heightText = null;// 高度输入框
 
+	/**
+	 * 
+	 * @param mazePane：迷宫面板
+	 */
 	public AutoCreatePane(MazePane mazePane) {
 		paint();
 		run(mazePane);
 	}
 
+	/**
+	 * 输出迷宫面板
+	 */
 	public void paint() {
 
 		titleLabel = new Label("Enter the height and width of the maze,and enter the button:");
@@ -70,6 +79,7 @@ class AutoCreatePane extends Pane {
 	 */
 	private void run(MazePane mazePane) {
 
+		// 生成迷宫按钮事件
 		createButton.setOnAction(e -> {
 			String width = new String(widthText.getText());
 			String height = new String(heightText.getText());

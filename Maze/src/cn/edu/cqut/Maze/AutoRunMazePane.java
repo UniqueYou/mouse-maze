@@ -7,15 +7,18 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
- * 自动走迷宫面板
+ * 自动走迷宫的面板
+ * 
+ * @author Song
+ *
  */
 class AutoRunMazePane extends Pane {
 
 	/** 面板的宽度为600 */
-	private final int width = 600;
+	private final int WIDTH = 600;
 
 	/** 面板的高度为400 */
-	private final int height = 200;
+	private final int HEIGHT = 200;
 
 	Button runButton = null;// 自动走迷宫的运行按钮
 
@@ -44,11 +47,12 @@ class AutoRunMazePane extends Pane {
 	AutoRunMaze runMaze = null;// 自动走迷宫算法
 
 	/**
-	 * 不带参数的构造方法
+	 * 
+	 * @param mazePane:迷宫面板
 	 */
 	public AutoRunMazePane(MazePane mazePane) {
-		setWidth(width);
-		setHeight(height);
+		setWidth(WIDTH);
+		setHeight(HEIGHT);
 		paint();
 		run(mazePane);
 	}
@@ -127,7 +131,7 @@ class AutoRunMazePane extends Pane {
 
 		// 走的步数
 		stepSum = new Text(0, 490, "Step sum:");
-		stepSum.setFill(Color.CORNFLOWERBLUE);
+		stepSum.setFill(Color.BLUE);
 		stepSum.setFont(Font.font(20));
 
 		getChildren().clear();
@@ -166,6 +170,7 @@ class AutoRunMazePane extends Pane {
 				return;
 			}
 
+			// 自动走迷宫算法
 			runMaze = new AutoRunMaze(mazePane.getMazeData(), new Integer(startX), new Integer(startY),
 					new Integer(endX), new Integer(endY));
 			mazePane.getChildren().clear();

@@ -9,19 +9,15 @@ import javafx.scene.text.Text;;
 /**
  * 总的面板
  *
- * @author Song
+ * @author WangSong
  *
  */
 class TotalPane extends Pane {
 
-	/**
-	 * 面板的宽为1300
-	 */
+	/** 面板的宽为1300 */
 	private final double WIDTH = 1300;
 
-	/**
-	 * 面板的高为700
-	 */
+	/** 面板的高为700 */
 	private final double HEIGHT = 800;
 
 	int[][] mazaData;// 迷宫数据
